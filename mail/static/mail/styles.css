@@ -1,0 +1,7 @@
+textarea {
+    min-height: 400px;
+}
+
+#emails-view div{
+    border: solid 0.2px black;
+}
