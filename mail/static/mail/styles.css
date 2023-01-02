@@ -2,6 +2,26 @@ textarea {
     min-height: 400px;
 }
 
-#emails-view div{
-    border: solid 0.2px black;
+.box-view,
+.emails-inside-the-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.box-view {
+    margin-bottom: 5px;
+
+    border: solid black .1px;
+    border-radius: 5px;
+}
+
+.archive-and-response  * {
+    border: #007bff solid .01px;
+    border-radius: 5px;
+    color: #007bff;
+}
+
+.reply {
+    margin-left: 5px;
 }

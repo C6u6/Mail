@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     load_mailbox('inbox');
 
     // Send the email
-    document.querySelector('#button').addEventListener('click', () => send_email());
+    document.querySelector('#button').addEventListener('click', async () => send_email());
 });
 
 function compose_email() {
@@ -62,8 +62,7 @@ function send_email() {
     .catch(error => console.log(error));
 
     // Load the user's sent mailbox
-    // load_mailbox('sent');
-    
+    load_mailbox('sent');
 }
 
 function load_mailbox_content(mailbox) {
@@ -86,6 +85,7 @@ function load_mailbox_content(mailbox) {
             const userIsSender = element.sender == document.querySelector("#user-email").innerHTML;
 
             // Put a class on each new created div
+            boxDiv.setAttribute('class', 'box-view');
             emailDiv.setAttribute('class', 'emails-inside-the-view'); 
 
             // Compose the html that will represent the email
@@ -94,25 +94,25 @@ function load_mailbox_content(mailbox) {
             }
 
             // When clicked, change its backgrouncolor and make a new request to have more info about the email
-            emailDiv.addEventListener('click', function () {
+            boxDiv.addEventListener('click', function () {
                 mark_as_read(element);
                 particular_email(element);
             });
             
             // Change the background of the div if it was alreary read
             if (element.read == false) {
-                emailDiv.style.backgroundColor = 'gray';
+                boxDiv.style.backgroundColor = 'white';
             }
             else {
-                emailDiv.style.backgroundColor = 'white';
-            } 
+                boxDiv.style.backgroundColor = 'gray';
+            };
 
             if (!userIsSender) {
-                if (element.read == false) {
-                    emailDiv.style.backgroundColor = 'gray';
+                if (element.read) {
+                    boxDiv.style.backgroundColor = 'gray';
                 }
                 else {
-                    emailDiv.style.backgroundColor = 'white';
+                    boxDiv.style.backgroundColor = 'white';
                 }
             }
 
@@ -133,7 +133,7 @@ function mark_as_read(email) {
     fetch(`emails/${email.id}`, {
         method: 'PUT',
         body: JSON.stringify({
-            read: false,
+            read: true,
         })
       })
     .catch(error => console.log(error));
@@ -197,8 +197,12 @@ function addButtons(email, tag_for_insert, emailWasSentByUser){
         reply.setAttribute('class', 'reply');
 
         reply.addEventListener('click', function () {reply_to(email)});
+
+        const divForButtons = document.createElement('div');
+        divForButtons.setAttribute('class', 'archive-and-response');
+        divForButtons.append(button, reply);
         
-        tag_for_insert.append(button, reply);
+        tag_for_insert.append(divForButtons);
     }
 }
 
